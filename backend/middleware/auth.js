@@ -22,6 +22,29 @@ const auth = async (req, res, next) => {
   }
 };
 
+const authAdmin = async (req, res, next) => {
+  let token;
+  token = req.cookies.jwt;
+  if (!token) return res.status(401).json({ error: "unauthorized no token" });
+
+  // find user
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+    console.log("decoded", decoded);
+    const user = await User.findById(decoded.id);
+
+    const isAdmin = user.isAdmin ? true : false;
+
+    if (!isAdmin) return res.status(401).json({ error: "unathorized Access" });
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({ error: "unauthorized invalid token" });
+  }
+};
+
 module.exports = {
   auth,
+  authAdmin,
 };

@@ -4,7 +4,7 @@ const { generateToken } = require("../helper/utils");
 
 // get users
 // route /users
-// method post
+// method get
 const getUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -55,7 +55,7 @@ const getProfile = async (req, res) => {
 // route /users
 // method post
 const createUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, isAdmin } = req.body;
 
   try {
     if (!name || !email || !password) {
@@ -65,6 +65,7 @@ const createUser = async (req, res) => {
       name,
       email,
       password,
+      isAdmin,
     });
 
     await user.save();
@@ -100,7 +101,14 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ error: "check credentials and try again" });
     const token = generateToken(user._id);
     res.cookie("jwt", token);
-    return res.status(200).json({ name: user.name, email: user.email, token });
+    return res
+      .status(200)
+      .json({
+        name: user.name,
+        email: user.email,
+        token,
+        isAdmin: user.isAdmin,
+      });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "internal server error" });

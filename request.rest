@@ -21,9 +21,10 @@ POST http://localhost:5000/users
 Content-Type: application/json
 
 {
-    "name": "kofi arhin", 
-    "email": "kofiarhin@gmail.com",
-    "password": "password"
+    "name": "Admin Admin", 
+    "email": "admin@gmail.com",
+    "password": "password",
+    "isAdmin": true 
 }
 
 # login user
@@ -32,7 +33,7 @@ POST http://localhost:5000/users/login
 Content-Type: application/json
 
 {
-    "email": "kofiarhin@gmail.com",
+    "email": "admin@gmail.com",
     "password": "password"
 }
 
@@ -40,3 +41,38 @@ Content-Type: application/json
 # logout user
 ###
 POST http://localhost:5000/users/logout
+
+#get produts
+###
+GET http://localhost:5000/products 
+
+# clear products
+###
+DELETE http://localhost:5000/products
+
+# create cart
+###
+POST http://localhost:5000/carts/create
+Content-Type: application/json
+
+{
+    "products": [
+        {
+            "productId": "629d0e257fbe7eb52ddbabec",
+            "quantity": 5
+        },
+        {
+            "productId": "629d0e257fbe7eb52ddbabef",
+            "quantity": 2
+        }
+    ]
+}
+
+# get carts
+###
+GET http://localhost:5000/carts
+
+
+# get cart
+###
+http://localhost:5000/carts/650e839f960a73e07045cd7a
